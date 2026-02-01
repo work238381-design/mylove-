@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anushka 💖</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:linear-gradient(135deg,#ff758c,#ffb199);
+    font-family:"Segoe UI",sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    overflow:hidden;
+}
+
+.card{
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+    width:360px;
+    z-index:2;
+}
+
+h1{color:#ff3b6f;margin-bottom:12px}
+
+p{
+    color:#333;
+    font-size:16px;
+    line-height:1.6;
+    white-space:pre-line;
+}
+
+/* blinking cursor */
+.cursor::after{
+    content:"|";
+    animation:blink 1s infinite;
+    margin-left:2px;
+}
+@keyframes blink{50%{opacity:0}}
+
+.buttons{
+    margin-top:20px;
+}
+
+button{
+    padding:12px 28px;
+    font-size:16px;
+    margin:8px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+#yes{
+    background:#ff3b6f;
+    color:white;
+    box-shadow:0 6px 15px rgba(255,59,111,.4);
+}
+#yes:hover{transform:scale(1.05)}
+
+#no{
+    background:#ddd;
+    position:relative;
+}
+
+/* hearts */
+@keyframes fall{
+    to{transform:translateY(110vh);opacity:0}
+}
+.heart{
+    position:fixed;
+    top:-20px;
+    font-size:18px;
+    animation:fall 6s linear;
+    opacity:.7;
+    z-index:1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Anushka ❤️</h1>
+
+    <!-- FAIL-SAFE TEXT (always visible) -->
+    <p id="text" class="cursor">
+I won’t make this long…
+
+But I want you to know this —
+
+Talking to you makes my ordinary days feel special.
+Your presence brings a smile I don’t even try to hide.
+
+So today, with all honesty in my heart…
+
+Will you be my Valentine? 💌
+    </p>
+
+    <div class="buttons" id="buttons">
+        <button id="yes" onclick="yesClicked()">Yes 💖</button>
+        <button id="no" onmouseover="shrinkAndMove()">No 🙈</button>
+    </div>
+</div>
+
+<script>
+/* typing enhancement (safe) */
+document.addEventListener("DOMContentLoaded",()=>{
+    const message =
+`I won’t make this long…
+
+But I want you to know this —
+
+Talking to you makes my ordinary days feel special.
+Your presence brings a smile I don’t even try to hide.
+
+So today, with all honesty in my heart…
+
+Will you be my Valentine? 💌`;
+
+    const textEl=document.getElementById("text");
+    let i=0;
+    textEl.textContent="";
+
+    function type(){
+        if(i<message.length){
+            textEl.textContent+=message.charAt(i++);
+            setTimeout(type,35);
+        }
+    }
+    setTimeout(type,300);
+});
+
+/* NO button */
+let scale=1;
+function shrinkAndMove(){
+    const b=document.getElementById("no");
+    scale=Math.max(.3,scale-.1);
+    b.style.transform=`scale(${scale})`;
+    b.style.position="absolute";
+    b.style.left=Math.random()*80+"vw";
+    b.style.top=Math.random()*80+"vh";
+}
+
+/* YES click */
+function yesClicked(){
+    confetti({particleCount:250,spread:100,origin:{y:.6}});
+    document.body.innerHTML=`
+        <div style="color:white;text-align:center">
+            <h1>💖 She Said Yes 💖</h1>
+            <p style="font-size:18px">
+                Thank you, Anushka 🌹<br><br>
+                This moment means more to me than words can say.
+            </p>
+            <p style="opacity:.85">Anushka ❤️ Kartik | Valentine</p>
+        </div>`;
+}
+
+/* heart rain */
+setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+},900);
+</script>
+
+</body>
+</html>
